@@ -43,8 +43,6 @@ dependencies {
     implementation('com.blankj:utilcodex:1.30.6') {
         exclude group: 'com.google.code.gson'
     }
-    //immersionbar
-    implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
     //glide
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
