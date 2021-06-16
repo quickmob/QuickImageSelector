@@ -1,0 +1,3 @@
+include ':pictureselector'
+include ':app'
+rootProject.name = "QuickPictureSelector"

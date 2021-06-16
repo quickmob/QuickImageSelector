@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.lookballs.pictureselector.widget.SquareRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/picture_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/picture_ll_pic_placeholder" />
+
+    <LinearLayout
+        android:id="@+id/check_ll"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <CheckBox
+                android:id="@+id/check_cb"
+                style="@style/CheckBox"
+                android:checked="false"
+                android:clickable="false"
+                android:drawableRight="?attr/picture.ps.checked.style" />
+
+            <TextView
+                android:id="@+id/checkNum_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/picture_color_FFFFFF"
+                android:textSize="11sp"
+                android:visibility="gone" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/gif_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/picture_shape_gif_tag"
+        android:text="@string/picture_text_gif_tag"
+        android:textColor="@color/picture_color_FFFFFF"
+        android:textSize="11sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/longChart_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/picture_shape_gif_tag"
+        android:text="@string/picture_text_long_tag"
+        android:textColor="@color/picture_color_FFFFFF"
+        android:textSize="11sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/duration_tv"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/picture_bg_duration"
+        android:drawableLeft="@drawable/picture_ic_video"
+        android:drawablePadding="3dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="5dp"
+        android:text="00:00"
+        android:textColor="@color/picture_color_FFFFFF"
+        android:textSize="11sp"
+        android:visibility="visible" />
+</com.lookballs.pictureselector.widget.SquareRelativeLayout>

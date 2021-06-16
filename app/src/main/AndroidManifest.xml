@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.lookballs.app.pictureselector">
+
+    <!-- TODO 在AndroidQ及以上手机，如果不设置android:requestLegacyExternalStorage="true"，图片加载不出来，这里需要去做适配 -->
+
+    <application
+        android:name=".StartApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.QuickPictureselector">
+        <activity android:name=".PictureSelectorMainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".TestActivity" />
+        <activity android:name=".TestFragmentActivity" />
+    </application>
+
+</manifest>

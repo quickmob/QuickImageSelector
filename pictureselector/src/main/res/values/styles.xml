@@ -1,0 +1,154 @@
+<resources>
+    <!--默认样式，注意每一项都不能少-->
+    <style name="picture.default.style" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--是否开启沉浸式状态栏-->
+        <item name="picture.isImmersionbarEnable">true</item>
+        <!--勾选样式模式true开启数字勾选样式false开启图标勾选样式-->
+        <item name="picture.checkNumMode">false</item>
+        <!--相册文件夹列表选中图标-->
+        <item name="picture.folder.checkedDot.style">@drawable/picture_shape_oval_orange</item>
+
+        <!--图片列表-标题栏/状态栏背景色-->
+        <item name="picture.ps.titleBg.color">@color/picture_color_393A3E</item>
+        <!--图片列表-勾选样式-->
+        <item name="picture.ps.checked.style">@drawable/picture_selector_cb_white</item>
+        <!--图片列表-返回键图标-->
+        <item name="picture.ps.leftBack.icon">@drawable/picture_ic_back_white</item>
+        <!--图片列表-标题文字颜色-->
+        <item name="picture.ps.titleText.color">@color/picture_color_FFFFFF</item>
+        <!--图片列表-已完成文字颜色-->
+        <item name="picture.ps.completeText.style">@drawable/picture_selector_color_white</item>
+        <!--图片列表-底部背景色-->
+        <item name="picture.ps.bottomBg.color">@color/picture_color_393A3E</item>
+        <!--图片列表-底部文件夹上下拉箭头-->
+        <item name="picture.ps.arrow.style">@drawable/picture_selector_arrow_white</item>
+        <!--图片列表-底部文件夹文字颜色-->
+        <item name="picture.ps.bottomText.color">@color/picture_color_FFFFFF</item>
+        <!--图片列表-预览文字颜色-->
+        <item name="picture.ps.previewText.style">@drawable/picture_selector_color_white</item>
+
+        <!--预览界面-标题栏/状态栏背景色-->
+        <item name="picture.pp.titleBg.color">@color/picture_color_393A3E</item>
+        <!--预览界面-返回键图标-->
+        <item name="picture.pp.leftBack.icon">@drawable/picture_ic_back_white</item>
+        <!--预览界面-标题文字颜色-->
+        <item name="picture.pp.titleText.color">@color/picture_color_FFFFFF</item>
+        <!--预览界面-已完成文字颜色-->
+        <item name="picture.pp.completeText.style">@drawable/picture_selector_color_white</item>
+        <!--预览界面-底部背景色-->
+        <item name="picture.pp.bottomBg.color">@color/picture_color_393A3E</item>
+        <!--预览界面-勾选样式-->
+        <item name="picture.pp.checked.style">@drawable/picture_selector_cb_white</item>
+        <!--预览界面-选择文字颜色-->
+        <item name="picture.pp.select.color">@color/picture_color_FFFFFF</item>
+    </style>
+    <!--白色样式，注意每一项都不能少-->
+    <style name="picture.white.style" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--是否开启沉浸式状态栏-->
+        <item name="picture.isImmersionbarEnable">true</item>
+        <!--勾选样式模式true开启数字勾选样式false开启图标勾选样式-->
+        <item name="picture.checkNumMode">false</item>
+        <!--相册文件夹列表选中图标-->
+        <item name="picture.folder.checkedDot.style">@drawable/picture_shape_oval_orange</item>
+
+        <!--图片列表-标题栏/状态栏背景色-->
+        <item name="picture.ps.titleBg.color">@color/picture_color_FFFFFF</item>
+        <!--图片列表-勾选样式-->
+        <item name="picture.ps.checked.style">@drawable/picture_selector_cb_white</item>
+        <!--图片列表-返回键图标-->
+        <item name="picture.ps.leftBack.icon">@drawable/picture_ic_back_black</item>
+        <!--图片列表-标题文字颜色-->
+        <item name="picture.ps.titleText.color">@color/picture_color_393A3E</item>
+        <!--图片列表-已完成文字颜色-->
+        <item name="picture.ps.completeText.style">@drawable/picture_selector_color_black</item>
+        <!--图片列表-底部背景色-->
+        <item name="picture.ps.bottomBg.color">@color/picture_color_FFFFFF</item>
+        <!--图片列表-底部文件夹上下拉箭头-->
+        <item name="picture.ps.arrow.style">@drawable/picture_selector_arrow_black</item>
+        <!--图片列表-底部文件夹文字颜色-->
+        <item name="picture.ps.bottomText.color">@color/picture_color_393A3E</item>
+        <!--图片列表-预览文字颜色-->
+        <item name="picture.ps.previewText.style">@drawable/picture_selector_color_black</item>
+
+        <!--预览界面-标题栏/状态栏背景色-->
+        <item name="picture.pp.titleBg.color">@color/picture_color_FFFFFF</item>
+        <!--预览界面-返回键图标-->
+        <item name="picture.pp.leftBack.icon">@drawable/picture_ic_back_black</item>
+        <!--预览界面-标题文字颜色-->
+        <item name="picture.pp.titleText.color">@color/picture_color_393A3E</item>
+        <!--预览界面-已完成文字颜色-->
+        <item name="picture.pp.completeText.style">@drawable/picture_selector_color_black</item>
+        <!--预览界面-底部背景色-->
+        <item name="picture.pp.bottomBg.color">@color/picture_color_FFFFFF</item>
+        <!--预览界面-勾选样式-->
+        <item name="picture.pp.checked.style">@drawable/picture_selector_cb_black</item>
+        <!--预览界面-选择文字颜色-->
+        <item name="picture.pp.select.color">@color/picture_color_393A3E</item>
+    </style>
+
+    <!--数字样式，注意每一项都不能少-->
+    <style name="picture.num.style" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--是否开启沉浸式状态栏-->
+        <item name="picture.isImmersionbarEnable">true</item>
+        <!--勾选样式模式true开启数字勾选样式false开启图标勾选样式-->
+        <item name="picture.checkNumMode">true</item>
+        <!--相册文件夹列表选中图标-->
+        <item name="picture.folder.checkedDot.style">@drawable/picture_shape_oval_orange</item>
+
+        <!--图片列表-标题栏/状态栏背景色-->
+        <item name="picture.ps.titleBg.color">@color/picture_color_7D7DFF</item>
+        <!--图片列表-勾选样式-->
+        <item name="picture.ps.checked.style">@drawable/picture_selector_cb_num_white</item>
+        <!--图片列表-返回键图标-->
+        <item name="picture.ps.leftBack.icon">@drawable/picture_ic_back_white</item>
+        <!--图片列表-标题文字颜色-->
+        <item name="picture.ps.titleText.color">@color/picture_color_FFFFFF</item>
+        <!--图片列表-已完成文字颜色-->
+        <item name="picture.ps.completeText.style">@drawable/picture_selector_color_white</item>
+        <!--图片列表-底部背景色-->
+        <item name="picture.ps.bottomBg.color">@color/picture_color_FFFFFF</item>
+        <!--图片列表-底部文件夹上下拉箭头-->
+        <item name="picture.ps.arrow.style">@drawable/picture_selector_arrow_black</item>
+        <!--图片列表-底部文件夹文字颜色-->
+        <item name="picture.ps.bottomText.color">@color/picture_color_393A3E</item>
+        <!--图片列表-预览文字颜色-->
+        <item name="picture.ps.previewText.style">@drawable/picture_selector_color_black</item>
+
+        <!--预览界面-标题栏/状态栏背景色-->
+        <item name="picture.pp.titleBg.color">@color/picture_color_7D7DFF</item>
+        <!--预览界面-返回键图标-->
+        <item name="picture.pp.leftBack.icon">@drawable/picture_ic_back_white</item>
+        <!--预览界面-标题文字颜色-->
+        <item name="picture.pp.titleText.color">@color/picture_color_FFFFFF</item>
+        <!--预览界面-已完成文字颜色-->
+        <item name="picture.pp.completeText.style">@drawable/picture_selector_color_white</item>
+        <!--预览界面-底部背景色-->
+        <item name="picture.pp.bottomBg.color">@color/picture_color_FFFFFF</item>
+        <!--预览界面-勾选样式-->
+        <item name="picture.pp.checked.style">@drawable/picture_selector_cb_num_black</item>
+        <!--预览界面-选择文字颜色-->
+        <item name="picture.pp.select.color">@color/picture_color_393A3E</item>
+    </style>
+
+    <style name="WindowStyle">
+        <item name="android:windowEnterAnimation">@anim/picture_window_in</item>
+        <item name="android:windowExitAnimation">@anim/picture_window_out</item>
+    </style>
+
+    <style name="CheckBox">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:button">@null</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <!--给View添加点击效果，Android 5.0以上是波纹效果，5.0以下是普通的点击效果（简言之，跟系统默认点击效果一致）-->
+    <style name="ClickableImageView">
+        <item name="android:clickable">true</item>
+        <item name="android:background">?android:selectableItemBackground</item>
+    </style>
+
+    <declare-styleable name="MaxHeightRecyclerView">
+        <attr name="maxHeight" format="dimension" />
+    </declare-styleable>
+</resources>

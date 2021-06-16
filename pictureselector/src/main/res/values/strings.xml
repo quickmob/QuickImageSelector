@@ -1,0 +1,30 @@
+<resources>
+    <string name="picture_text_take_picture">拍一张</string>
+    <string name="picture_text_take_video">拍一个</string>
+    <string name="picture_text_img_video">图片和视频</string>
+    <string name="picture_text_img">全部图片</string>
+    <string name="picture_text_video">全部视频</string>
+    <string name="picture_text_preview">预览</string>
+    <string name="picture_text_completed">已完成</string>
+    <string name="picture_text_select">选择</string>
+    <string name="picture_text_please_select">请选择</string>
+    <string name="picture_text_empty">无图片或视频</string>
+    <string name="picture_text_gif_tag">动图</string>
+    <string name="picture_text_long_tag">长图</string>
+
+    <string name="picture_toast_rule">不能同时选择图片或视频</string>
+    <string name="picture_toast_max_num_img">你最多可以选择%1$s张图片</string>
+    <string name="picture_toast_max_num_video">你最多可以选择%1$s个视频</string>
+    <string name="picture_toast_min_num_img">图片最低选择不能少于%1$s张</string>
+    <string name="picture_toast_min_num_video">视频最低选择不能少于%1$s个</string>
+    <string name="picture_toast_permission_write">获取内存卡读写权限被拒绝</string>
+    <string name="picture_toast_permission_write_never">获取内存卡读写权限被永久拒绝</string>
+    <string name="picture_toast_permission_camera">获取系统相机权限被拒绝</string>
+    <string name="picture_toast_permission_camera_never">获取系统相机权限被永久拒绝</string>
+    <string name="picture_toast_img_error">图片已损坏</string>
+    <string name="picture_toast_video_error">视频已损坏</string>
+    <string name="picture_toast_video_not_play">没有支持视频预览的应用</string>
+    <string name="picture_toast_take_photo_none">该设备不支持拍照功能</string>
+    <string name="picture_toast_take_video_none">该设备不支持录像功能</string>
+    <string name="picture_toast_load_error">图库加载失败</string>
+</resources>

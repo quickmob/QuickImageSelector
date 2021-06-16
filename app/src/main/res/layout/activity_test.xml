@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="10dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/et_appiont_folder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:hint="输入需要显示指定文件夹的名称"/>
+
+            <EditText
+                android:id="@+id/et_span_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:inputType="number"
+                android:hint="输入每行显示的图片列数"/>
+
+            <EditText
+                android:id="@+id/et_select_min_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:inputType="number"
+                android:hint="输入选择文件最小值"/>
+
+            <EditText
+                android:id="@+id/et_select_max_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:inputType="number"
+                android:hint="输入选择文件最大值"/>
+
+            <RadioGroup
+                android:id="@+id/rgb_style"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/rb_default_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="默认样式"
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_white_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="样式一"
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_num_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="样式二"
+                    android:textSize="14sp" />
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/rgb_choose_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="全部"
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="图片"
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_video"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="视频"
+                    android:textSize="14sp" />
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/rgb_select_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_multiple"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="多选"
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_single"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="单选"
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_none"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="不选"
+                    android:textSize="14sp" />
+            </RadioGroup>
+
+            <CheckBox
+                android:id="@+id/cb_isCamera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:gravity="center_vertical"
+                android:text="显示or隐藏拍摄"
+                android:textSize="14sp" />
+
+            <CheckBox
+                android:id="@+id/cb_isGif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:gravity="center_vertical"
+                android:text="是否显示Gif图片"
+                android:textSize="14sp" />
+
+            <CheckBox
+                android:id="@+id/cb_isSelectImageVideo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:gravity="center_vertical"
+                android:text="是否可以同时选择图片和视频"
+                android:textSize="14sp" />
+
+            <CheckBox
+                android:id="@+id/cb_preview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:gravity="center_vertical"
+                android:text="是否预览"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </ScrollView>
+    <TextView
+        android:id="@+id/tv_selectResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="6sp"/>
+    <Button
+        android:id="@+id/btn_openSelector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="打开图片选择器"/>
+</LinearLayout>

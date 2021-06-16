@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="picture_color_999999">#999999</color>
+    <color name="picture_color_FFFFFF">#FFFFFF</color>
+    <color name="picture_color_B0567BA3">#B0567BA3</color>
+    <color name="picture_color_000000">#000000</color>
+    <color name="picture_color_FA632D">#FA632D</color>
+    <color name="picture_color_393A3E">#393A3E</color>
+    <color name="picture_color_00000000">#00000000</color>
+    <color name="picture_color_F0FFFFFF">#F0FFFFFF</color>
+    <color name="picture_color_E0DBDBDB">#E0DBDBDB</color>
+    <color name="picture_color_4D4D4D">#4D4D4D</color>
+    <color name="picture_color_80000000">#80000000</color>
+    <color name="picture_color_20000000">#20000000</color>
+    <color name="picture_color_7D7DFF">#7D7DFF</color>
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="picture.isImmersionbarEnable" format="boolean" />
+    <attr name="picture.checkNumMode" format="boolean" />
+    <attr name="picture.folder.checkedDot.style" format="reference" />
+
+    <attr name="picture.ps.titleBg.color" format="reference|color" />
+    <attr name="picture.ps.checked.style" format="reference" />
+    <attr name="picture.ps.leftBack.icon" format="reference" />
+    <attr name="picture.ps.titleText.color" format="reference|color" />
+    <attr name="picture.ps.completeText.style" format="reference" />
+    <attr name="picture.ps.bottomBg.color" format="reference" />
+    <attr name="picture.ps.arrow.style" format="reference" />
+    <attr name="picture.ps.bottomText.color" format="reference|color" />
+    <attr name="picture.ps.previewText.style" format="reference" />
+
+    <attr name="picture.pp.titleBg.color" format="reference|color" />
+    <attr name="picture.pp.leftBack.icon" format="reference" />
+    <attr name="picture.pp.titleText.color" format="reference|color" />
+    <attr name="picture.pp.completeText.style" format="reference" />
+    <attr name="picture.pp.bottomBg.color" format="reference" />
+    <attr name="picture.pp.checked.style" format="reference" />
+    <attr name="picture.pp.select.color" format="reference|color" />
+</resources>
