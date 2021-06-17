@@ -25,6 +25,7 @@ public class PictureOptionsBean implements Parcelable {
     public boolean isPreview;
     public static PictureOptions.OnPermissionDenied onPermissionDenied;
     public static PictureOptions.OnPictureSelectResult onPictureSelectResult;
+    public static PictureOptions.OnCameraResult onCameraResult;
 
     public String[] specifiedFormat;
 
@@ -64,6 +65,7 @@ public class PictureOptionsBean implements Parcelable {
     public static void destroy() {
         PictureOptionsBean.onPermissionDenied = null;
         PictureOptionsBean.onPictureSelectResult = null;
+        PictureOptionsBean.onCameraResult = null;
     }
 
     private static final class InstanceHolder {

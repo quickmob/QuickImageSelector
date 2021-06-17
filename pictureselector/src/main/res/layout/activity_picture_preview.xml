@@ -57,6 +57,7 @@
         android:layout_weight="1" />
 
     <RelativeLayout
+        android:id="@+id/bottom_rl"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="?attr/picture.pp.bottomBg.color"

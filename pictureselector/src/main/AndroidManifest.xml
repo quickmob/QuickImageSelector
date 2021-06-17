@@ -10,9 +10,16 @@
     <application>
         <activity
             android:name=".app.activity.PictureSelectorActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
             android:name=".app.activity.PicturePreviewActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".app.activity.PictureCameraActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/OnePxActivityStyle" />
     </application>
 </manifest>

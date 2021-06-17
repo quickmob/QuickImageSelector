@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,24 +39,31 @@ public class PicturePreviewActivity extends PictureBaseActivity implements View.
     private TextView titleTv, okTv, checkNumTv;
     private LinearLayout checkLl;
     private BugViewPager photoVp;
+    private RelativeLayout bottomRl;
 
     //其他
     private PicturePreviewAdapter mAdapter;
     private ArrayList<LoadMediaBean> mImgList;
     private ArrayList<LoadMediaBean> mSelectImgList;
     private int mPosition = 0;
-    private boolean isClickPreView = false;
+    private boolean isExternalEnter = false;//是否是外部调用进来
 
-    public static void openActivity(Context mContext, ArrayList<LoadMediaBean> mImgList, ArrayList<LoadMediaBean> mSelectImgList, int mPosition, boolean isClickPreView) {
+    public static void openActivity(Context mContext, ArrayList<LoadMediaBean> mImgList, ArrayList<LoadMediaBean> mSelectImgList, int mPosition) {
+        SaveDataHelper.getInstance().saveData("mImgList", mImgList);
+        SaveDataHelper.getInstance().saveData("mSelectImgList", mSelectImgList);
+
         Bundle bundle = new Bundle();
-        if (isClickPreView) {
-            bundle.putParcelableArrayList("mImgList", mImgList);
-        } else {
-            SaveDataHelper.getInstance().saveData("mImgList", mImgList);
-        }
-        bundle.putParcelableArrayList("mSelectImgList", mSelectImgList);
         bundle.putInt("mPosition", mPosition);
-        bundle.putBoolean("isClickPreView", isClickPreView);
+        bundle.putBoolean("isExternalEnter", false);
+        mContext.startActivity(new Intent(mContext, PicturePreviewActivity.class).putExtras(bundle));
+    }
+
+    public static void openActivity(Context mContext, ArrayList<LoadMediaBean> mImgList, int mPosition) {
+        SaveDataHelper.getInstance().saveData("mImgList", mImgList);
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("mPosition", mPosition);
+        bundle.putBoolean("isExternalEnter", true);
         mContext.startActivity(new Intent(mContext, PicturePreviewActivity.class).putExtras(bundle));
     }
 
@@ -79,23 +87,24 @@ public class PicturePreviewActivity extends PictureBaseActivity implements View.
         checkNumTv = findViewById(R.id.checkNum_tv);
         checkCb = findViewById(R.id.check_cb);
         checkLl = findViewById(R.id.check_ll);
+        bottomRl = findViewById(R.id.bottom_rl);
         backIv.setOnClickListener(this);
         checkLl.setOnClickListener(this);
         okTv.setOnClickListener(this);
 
         mPosition = getIntent().getIntExtra("mPosition", 0);
-        isClickPreView = getIntent().getBooleanExtra("isClickPreView", isClickPreView);
-        mSelectImgList = getIntent().getParcelableArrayListExtra("mSelectImgList");
-        if (isClickPreView) {//底部预览按钮点击过来
-            mImgList = getIntent().getParcelableArrayListExtra("mImgList");
-        } else {//item点击过来
-            mImgList = (ArrayList<LoadMediaBean>) SaveDataHelper.getInstance().getData("mImgList");
+        isExternalEnter = getIntent().getBooleanExtra("isExternalEnter", false);
+        mImgList = (ArrayList<LoadMediaBean>) SaveDataHelper.getInstance().getData("mImgList");
+        mSelectImgList = (ArrayList<LoadMediaBean>) SaveDataHelper.getInstance().getData("mSelectImgList");
+        if (mImgList == null) {
+            mImgList = new ArrayList<>();
         }
         if (mSelectImgList == null) {
             mSelectImgList = new ArrayList<>();
         }
-        if (mImgList == null) {
-            mImgList = new ArrayList<>();
+        if (isExternalEnter) {
+            okTv.setVisibility(View.GONE);
+            bottomRl.setVisibility(View.GONE);
         }
     }
 
@@ -132,7 +141,7 @@ public class PicturePreviewActivity extends PictureBaseActivity implements View.
                 return;
             }
             //判断图片是否存在（如原图路径不存在或者路径存在但文件不存在）
-            if (!new File(mImgList.get(mPosition).getPath()).exists()) {
+            if (!new File(mImgList.get(mPosition).getAbsolutePath()).exists()) {
                 Toast.makeText(this.getApplicationContext(), PictureHelper.tipsFileError(this, mImgList.get(mPosition).getMimeType()), Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -172,7 +181,7 @@ public class PicturePreviewActivity extends PictureBaseActivity implements View.
                     if (isCheckNumMode) {
                         LoadMediaBean mediaBean = mImgList.get(mPosition);
                         for (LoadMediaBean media : mSelectImgList) {
-                            if (media.getPath().equals(mediaBean.getPath())) {
+                            if (media.getRealPath().equals(mediaBean.getRealPath())) {
                                 mediaBean.num = media.num;
                                 checkNumTv.setVisibility(View.VISIBLE);
                                 checkNumTv.setText(String.valueOf(mediaBean.num));
@@ -212,7 +221,7 @@ public class PicturePreviewActivity extends PictureBaseActivity implements View.
     public boolean isSelected(LoadMediaBean image) {
         boolean result = false;
         for (LoadMediaBean bean : mSelectImgList) {
-            if (bean.getPath().equals(image.getPath())) {
+            if (bean.getRealPath().equals(image.getRealPath())) {
                 result = true;
                 break;
             }
@@ -232,7 +241,7 @@ public class PicturePreviewActivity extends PictureBaseActivity implements View.
                 Iterator<LoadMediaBean> it = mSelectImgList.iterator();
                 while (it.hasNext()) {
                     LoadMediaBean bean = it.next();
-                    if (bean.getPath().equals(image.getPath())) {
+                    if (bean.getRealPath().equals(image.getRealPath())) {
                         it.remove();
                         subSelectPosition();
                         break;
@@ -308,6 +317,7 @@ public class PicturePreviewActivity extends PictureBaseActivity implements View.
     protected void onDestroy() {
         super.onDestroy();
         SaveDataHelper.getInstance().clearData("mImgList");
+        SaveDataHelper.getInstance().clearData("mSelectImgList");
         mImgList = null;
         mSelectImgList = null;
     }

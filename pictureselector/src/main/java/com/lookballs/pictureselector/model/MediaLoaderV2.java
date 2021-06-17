@@ -17,6 +17,7 @@ import com.lookballs.pictureselector.app.bean.LoadMediaFolderBean;
 import com.lookballs.pictureselector.config.PictureConfig;
 import com.lookballs.pictureselector.config.PictureOptionsBean;
 import com.lookballs.pictureselector.helper.PictureHelper;
+import com.lookballs.pictureselector.util.SdkVersionUtils;
 import com.lookballs.pictureselector.util.ThreadUtil;
 
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class MediaLoaderV2 {
             MediaStore.MediaColumns.WIDTH,//3
             MediaStore.MediaColumns.HEIGHT,//4
             MediaStore.MediaColumns.DURATION,//5
-            MediaStore.MediaColumns.BUCKET_ID,//6*
+            MediaStore.MediaColumns.BUCKET_ID,//6
             MediaStore.MediaColumns.BUCKET_DISPLAY_NAME,//7
             MediaStore.MediaColumns.DISPLAY_NAME,//8
             MediaStore.MediaColumns.SIZE,//9
@@ -257,8 +258,8 @@ public class MediaLoaderV2 {
 
                 do {
                     long id = cursor.getLong(idIndex);
-                    //String path = SdkVersionUtils.isAndroid_Q() ? getRealPathAndroid_Q(id) : cursor.getString(pathIndex);
-                    String path = cursor.getString(pathIndex);
+                    String absolutePath = cursor.getString(pathIndex);
+                    String realPath = SdkVersionUtils.isAndroid_Q() ? getRealPathAndroid_Q(id) : absolutePath;
                     String pictureType = cursor.getString(pictureTypeIndex);
                     int width = cursor.getInt(widthIndex);
                     int height = cursor.getInt(heightIndex);
@@ -270,10 +271,10 @@ public class MediaLoaderV2 {
                     long dateAdded = cursor.getLong(dateAddedIndex);
 
                     //将扫描到的文件信息加入到allImages中
-                    LoadMediaBean image = new LoadMediaBean(id, path, duration, optionsBean.mimeType, pictureType, width, height, bucketId, bucketDisplayName, displayName, size, dateAdded);
+                    LoadMediaBean image = new LoadMediaBean(id, absolutePath, realPath, duration, optionsBean.mimeType, pictureType, width, height, bucketId, bucketDisplayName, displayName, size, dateAdded);
                     allImages.add(image);
                     //获取对应文件的文件夹信息并加入到allImageFolders中
-                    LoadMediaFolderBean imageFolder = PictureHelper.getImageFolder(path, allImageFolders);
+                    LoadMediaFolderBean imageFolder = PictureHelper.getImageFolder(realPath, bucketDisplayName, allImageFolders);
                     imageFolder.setImageNum(imageFolder.getImageNum() + 1);
                     imageFolder.setBucketId(bucketId);
                     //将扫描到的文件信息加入到allImageFolders中
@@ -288,7 +289,7 @@ public class MediaLoaderV2 {
                         LoadMediaFolderBean allImageFolder = new LoadMediaFolderBean();
                         allImageFolder.setImageNum(allImages.size());
                         allImageFolder.setBucketId(PictureConfig.DEFAULT_BUCKET_ID);
-                        allImageFolder.setFirstImagePath(allImages.get(0).getPath());
+                        allImageFolder.setFirstImagePath(allImages.get(0).getRealPath());
                         allImageFolder.setName(PictureHelper.getTitleText(activity, optionsBean.mimeType));
                         allImageFolder.setImages(allImages);
                         allImageFolders.add(0, allImageFolder);

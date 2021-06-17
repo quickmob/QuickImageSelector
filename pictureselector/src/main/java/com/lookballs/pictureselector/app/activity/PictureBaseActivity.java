@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.lookballs.pictureselector.R;
@@ -17,7 +17,7 @@ import com.lookballs.pictureselector.util.AttrsUtil;
 
 import java.util.ArrayList;
 
-public abstract class PictureBaseActivity extends FragmentActivity {
+public abstract class PictureBaseActivity extends AppCompatActivity {
 
     //自动改变字体颜色的临界值标识位
     private final int IMMERSION_BOUNDARY_COLOR = 0xFFBABABA;
@@ -34,15 +34,19 @@ public abstract class PictureBaseActivity extends FragmentActivity {
         } else {
             optionsBean = PictureOptionsBean.getInstance();
         }
-        int themeStyleId = optionsBean.themeStyleId;
-        setTheme(themeStyleId);
+        if (this instanceof PictureSelectorActivity || this instanceof PicturePreviewActivity) {
+            int themeStyleId = optionsBean.themeStyleId;
+            setTheme(themeStyleId);
+        }
         super.onCreate(savedInstanceState);
         initConfig();
 
-        setContentView(getLayoutId());
+        if (getLayoutId() > 0) {
+            setContentView(getLayoutId());
 
-        if (isImmersionbar()) {
-            immersionbar();
+            if (isImmersionbar()) {
+                immersionbar();
+            }
         }
     }
 
@@ -98,17 +102,27 @@ public abstract class PictureBaseActivity extends FragmentActivity {
         }
     }
 
-    protected void onResult(ArrayList<LoadMediaBean> images) {
+    protected void onSelectResult(ArrayList<LoadMediaBean> images) {
         if (PictureOptionsBean.onPictureSelectResult != null) {
             PictureOptionsBean.onPictureSelectResult.onResult(images);
         } else {
-            Intent intent = PictureHelper.putIntentResult(images);
+            Intent intent = PictureHelper.putIntentSelectResult(images);
             setResult(Activity.RESULT_OK, intent);
         }
-        exit();
+        finishPage();
     }
 
-    private void exit() {
+    protected void onCameraResult(ArrayList<LoadMediaBean> images) {
+        if (PictureOptionsBean.onCameraResult != null) {
+            PictureOptionsBean.onCameraResult.onResult(images);
+        } else {
+            Intent intent = PictureHelper.putIntentCameraResult(images);
+            setResult(Activity.RESULT_OK, intent);
+        }
+        finishPage();
+    }
+
+    protected void finishPage() {
         release();
         finish();
     }

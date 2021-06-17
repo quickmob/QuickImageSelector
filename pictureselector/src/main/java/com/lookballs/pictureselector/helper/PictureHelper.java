@@ -10,6 +10,7 @@ import com.lookballs.pictureselector.R;
 import com.lookballs.pictureselector.app.bean.LoadMediaBean;
 import com.lookballs.pictureselector.app.bean.LoadMediaFolderBean;
 import com.lookballs.pictureselector.config.PictureConfig;
+import com.lookballs.pictureselector.util.SdkVersionUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -158,15 +159,15 @@ public final class PictureHelper {
      * @param videoPath
      * @return
      */
-    public static int getLocalVideoDuration(String videoPath) {
-        int duration;
+    public static long getLocalVideoDuration(String videoPath) {
+        long duration;
         try {
             MediaMetadataRetriever mmr = new MediaMetadataRetriever();
             mmr.setDataSource(videoPath);
-            duration = Integer.parseInt(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
+            duration = Long.parseLong(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
         } catch (Exception e) {
             e.printStackTrace();
-            return 0;
+            return -1;
         }
         return duration;
     }
@@ -203,6 +204,19 @@ public final class PictureHelper {
             default:
                 return ctx.getString(R.string.picture_toast_img_error);
         }
+    }
+
+    /**
+     * 判断文件路径
+     *
+     * @param filePath
+     * @return
+     */
+    public static boolean isContent(String filePath) {
+        if (TextUtils.isEmpty(filePath)) {
+            return false;
+        }
+        return filePath.startsWith("content://");
     }
 
     /**
@@ -273,8 +287,18 @@ public final class PictureHelper {
      * @param data
      * @return
      */
-    public static Intent putIntentResult(ArrayList<LoadMediaBean> data) {
-        return new Intent().putExtra(PictureConfig.EXTRA_RESULT_SELECTION, data);
+    public static Intent putIntentSelectResult(ArrayList<LoadMediaBean> data) {
+        return new Intent().putExtra(PictureConfig.EXTRA_RESULT_SELECT, data);
+    }
+
+    /**
+     * 回调时将选择数据设置到intent
+     *
+     * @param data
+     * @return
+     */
+    public static Intent putIntentCameraResult(ArrayList<LoadMediaBean> data) {
+        return new Intent().putExtra(PictureConfig.EXTRA_RESULT_CAMERA, data);
     }
 
     /**
@@ -298,26 +322,50 @@ public final class PictureHelper {
     }
 
     /**
-     * 获取相应文件夹
+     * 获取图片文件夹
      *
-     * @param path
-     * @param imageFolders
+     * @param filePath
+     * @param folderName
+     * @param folders
      * @return
      */
-    public static LoadMediaFolderBean getImageFolder(String path, List<LoadMediaFolderBean> imageFolders) {
-        File imageFile = new File(path);
-        File folderFile = imageFile.getParentFile();
-        for (LoadMediaFolderBean folder : imageFolders) {
+    public static LoadMediaFolderBean getImageFolder(String filePath, String folderName, List<LoadMediaFolderBean> folders) {
+        String folderPath = null;
+        if (!SdkVersionUtils.isAndroid_Q()) {
+            try {
+                folderPath = new File(filePath).getParentFile().getAbsolutePath();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            folderPath = "unknown";
+        }
+
+        LoadMediaFolderBean folderBean = getLoadMediaFolder(folders, folderName);
+        if (folderBean != null) {
+            return folderBean;
+        } else {
+            LoadMediaFolderBean newFolderBean = getNewLoadMediaFolder(folderName, folderPath, filePath);
+            folders.add(newFolderBean);
+            return newFolderBean;
+        }
+    }
+
+    private static LoadMediaFolderBean getLoadMediaFolder(List<LoadMediaFolderBean> folders, String folderName) {
+        for (LoadMediaFolderBean folderBean : folders) {
             //同一个文件夹下，返回自己，否则创建新文件夹
-            if (folder.getName().equals(folderFile.getName())) {
-                return folder;
+            if (folderBean.getName().equals(folderName)) {
+                return folderBean;
             }
         }
-        LoadMediaFolderBean newFolder = new LoadMediaFolderBean();
-        newFolder.setName(folderFile.getName());
-        newFolder.setPath(folderFile.getAbsolutePath());
-        newFolder.setFirstImagePath(path);
-        imageFolders.add(newFolder);
-        return newFolder;
+        return null;
+    }
+
+    private static LoadMediaFolderBean getNewLoadMediaFolder(String folderName, String folderPath, String firstImagePath) {
+        LoadMediaFolderBean newFolderBean = new LoadMediaFolderBean();
+        newFolderBean.setName(folderName);
+        newFolderBean.setPath(folderPath);
+        newFolderBean.setFirstImagePath(firstImagePath);
+        return newFolderBean;
     }
 }

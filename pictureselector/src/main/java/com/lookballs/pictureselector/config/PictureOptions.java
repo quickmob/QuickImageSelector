@@ -1,6 +1,7 @@
 package com.lookballs.pictureselector.config;
 
 import com.lookballs.pictureselector.PictureSelector;
+import com.lookballs.pictureselector.app.activity.PictureCameraActivity;
 import com.lookballs.pictureselector.app.activity.PictureSelectorActivity;
 import com.lookballs.pictureselector.app.bean.LoadMediaBean;
 import com.lookballs.pictureselector.util.CommonUtil;
@@ -203,28 +204,28 @@ public class PictureOptions {
     /**
      * 开启图片选择页面
      */
-    public void forResult() {
-        forResult(PictureConfig.CHOOSE_REQUEST, null);
+    public void forSelectResult() {
+        forSelectResult(PictureConfig.CHOOSE_REQUEST, null);
     }
 
     /**
      * 开启图片选择页面
      */
-    public void forResult(int requestCode) {
-        forResult(requestCode, null);
+    public void forSelectResult(int requestCode) {
+        forSelectResult(requestCode, null);
     }
 
     /**
      * 开启图片选择页面
      */
-    public void forResult(OnPictureSelectResult onPictureSelectResult) {
-        forResult(PictureConfig.CHOOSE_REQUEST, onPictureSelectResult);
+    public void forSelectResult(OnPictureSelectResult onPictureSelectResult) {
+        forSelectResult(PictureConfig.CHOOSE_REQUEST, onPictureSelectResult);
     }
 
     /**
      * 开启图片选择页面
      */
-    public void forResult(int requestCode, OnPictureSelectResult onPictureSelectResult) {
+    public void forSelectResult(int requestCode, OnPictureSelectResult onPictureSelectResult) {
         if (!CommonUtil.isFastClick()) {
             if (pictureOptionsBean == null) {
                 return;
@@ -233,7 +234,44 @@ public class PictureOptions {
                 pictureOptionsBean.onPictureSelectResult = new WeakReference<>(onPictureSelectResult).get();
             }
             PictureConfig.CHOOSE_REQUEST = requestCode;
-            PictureSelectorActivity.openActivity(pictureSelector.getActivity(), pictureSelector.getFragment(), PictureConfig.CHOOSE_REQUEST);
+            PictureSelectorActivity.openActivity(pictureSelector.getActivity(), pictureSelector.getFragment());
+        }
+    }
+
+    /**
+     * 开启拍摄页面
+     */
+    public void forCameraResult() {
+        forCameraResult(PictureConfig.CAMERA_REQUEST, null);
+    }
+
+    /**
+     * 开启拍摄页面
+     */
+    public void forCameraResult(int requestCode) {
+        forCameraResult(requestCode, null);
+    }
+
+    /**
+     * 开启拍摄页面
+     */
+    public void forCameraResult(OnCameraResult onCameraResult) {
+        forCameraResult(PictureConfig.CAMERA_REQUEST, onCameraResult);
+    }
+
+    /**
+     * 开启拍摄页面
+     */
+    public void forCameraResult(int requestCode, OnCameraResult onCameraResult) {
+        if (!CommonUtil.isFastClick()) {
+            if (pictureOptionsBean == null) {
+                return;
+            }
+            if (onCameraResult != null) {
+                pictureOptionsBean.onCameraResult = new WeakReference<>(onCameraResult).get();
+            }
+            PictureConfig.CAMERA_REQUEST = requestCode;
+            PictureCameraActivity.openActivity(pictureSelector.getActivity(), pictureSelector.getFragment(), true);
         }
     }
 
@@ -248,6 +286,13 @@ public class PictureOptions {
      * 图片选择回调
      */
     public interface OnPictureSelectResult {
-        void onResult(ArrayList<LoadMediaBean> selectList);
+        void onResult(ArrayList<LoadMediaBean> list);
+    }
+
+    /**
+     * 拍摄回调
+     */
+    public interface OnCameraResult {
+        void onResult(ArrayList<LoadMediaBean> list);
     }
 }

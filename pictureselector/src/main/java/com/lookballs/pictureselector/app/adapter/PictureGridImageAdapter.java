@@ -77,7 +77,7 @@ public class PictureGridImageAdapter extends RecyclerView.Adapter<RecyclerView.V
     public interface AdapterCallBack {
         void onSelect(ArrayList<LoadMediaBean> beans);
 
-        void onCamera(int mimeType);
+        void onCamera();
     }
 
     public void getAdapterCallBack(AdapterCallBack callBack) {
@@ -117,14 +117,14 @@ public class PictureGridImageAdapter extends RecyclerView.Adapter<RecyclerView.V
             headerHolder.headerView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    callBack.onCamera(optionsBean.mimeType);
+                    callBack.onCamera();
                 }
             });
         } else {
             ViewHolder contentHolder = (ViewHolder) holder;
             LoadMediaBean image = mImagesList.get(!TextUtils.isEmpty(optionsBean.outputCameraPath) ? pos - 1 : pos);
             image.position = pos;
-            String path = image.getPath();
+            String realPath = image.getRealPath();
             String pictureType = image.getPictureType();
             boolean isVideo = PictureHelper.isVideo(pictureType);
             boolean gif = PictureHelper.isGif(pictureType);
@@ -140,7 +140,7 @@ public class PictureGridImageAdapter extends RecyclerView.Adapter<RecyclerView.V
                 if (checkNumMode) {
                     contentHolder.checkNum_tv.setVisibility(View.VISIBLE);
                     for (LoadMediaBean bean : checkImages) {
-                        if (bean.getPath().equals(image.getPath())) {
+                        if (bean.getRealPath().equals(image.getRealPath())) {
                             contentHolder.checkNum_tv.setText(String.valueOf(bean.num));
                             break;
                         }
@@ -178,7 +178,7 @@ public class PictureGridImageAdapter extends RecyclerView.Adapter<RecyclerView.V
                     .centerCrop();
             Glide.with(mContext)
                     .asDrawable()
-                    .load(path)
+                    .load(realPath)
                     .apply(options)
                     .into(contentHolder.picture_iv);
         }
@@ -226,7 +226,7 @@ public class PictureGridImageAdapter extends RecyclerView.Adapter<RecyclerView.V
      */
     public void checkChangeState(ViewHolder contentHolder, int position, LoadMediaBean image) {
         //判断图片是否存在（如原图路径不存在或者路径存在但文件不存在）
-        if (!new File(image.getPath()).exists()) {
+        if (!new File(image.getAbsolutePath()).exists()) {
             Toast.makeText(mContext.getApplicationContext(), PictureHelper.tipsFileError(mContext, image.getMimeType()), Toast.LENGTH_SHORT).show();
             return;
         }
@@ -249,7 +249,7 @@ public class PictureGridImageAdapter extends RecyclerView.Adapter<RecyclerView.V
             Iterator<LoadMediaBean> it = checkImages.iterator();
             while (it.hasNext()) {
                 LoadMediaBean bean = it.next();
-                if (bean.getPath().equals(image.getPath())) {
+                if (bean.getRealPath().equals(image.getRealPath())) {
                     it.remove();
                     subSelectPosition();
                     callBack.onSelect(checkImages);
@@ -325,7 +325,7 @@ public class PictureGridImageAdapter extends RecyclerView.Adapter<RecyclerView.V
     public boolean isSelected(LoadMediaBean image) {
         boolean result = false;
         for (LoadMediaBean bean : checkImages) {
-            if (bean.getPath().equals(image.getPath())) {
+            if (bean.getRealPath().equals(image.getRealPath())) {
                 result = true;
                 break;
             }
@@ -338,11 +338,11 @@ public class PictureGridImageAdapter extends RecyclerView.Adapter<RecyclerView.V
      */
     public void clickItem(int position, LoadMediaBean image) {
         //判断图片是否存在（如原图路径不存在或者路径存在但文件不存在）
-        if (!new File(image.getPath()).exists()) {
+        if (!new File(image.getAbsolutePath()).exists()) {
             Toast.makeText(mContext.getApplicationContext(), PictureHelper.tipsFileError(mContext, image.getMimeType()), Toast.LENGTH_SHORT).show();
             return;
         }
-        PicturePreviewActivity.openActivity(mContext, mImagesList, checkImages, !TextUtils.isEmpty(optionsBean.outputCameraPath) ? position - 1 : position, false);
+        PicturePreviewActivity.openActivity(mContext, mImagesList, checkImages, !TextUtils.isEmpty(optionsBean.outputCameraPath) ? position - 1 : position);
     }
 
 }

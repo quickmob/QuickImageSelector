@@ -73,7 +73,7 @@ public class PictureFolderAdapter extends RecyclerView.Adapter<PictureFolderAdap
         String name = folder.getName();
         long bucketId = folder.getBucketId();
         int imageNum = folder.getImageNum();
-        String imagePath = folder.getFirstImagePath();
+        String firstImagePath = folder.getFirstImagePath();
         boolean isChecked = folder.isChecked();
         int checkedNum = folder.getCheckedNum();
 
@@ -89,7 +89,7 @@ public class PictureFolderAdapter extends RecyclerView.Adapter<PictureFolderAdap
                 .override(SizeUtils.dp2px(55), SizeUtils.dp2px(55));
         Glide.with(holder.itemView.getContext())
                 .asBitmap()
-                .load(imagePath)
+                .load(firstImagePath)
                 .apply(options)
                 .into(new BitmapImageViewTarget(holder.firstImage_iv) {
                     @Override

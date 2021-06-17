@@ -112,9 +112,9 @@ public class PictureFolderLayout extends RelativeLayout {
                     int num = 0;// 记录当前相册下有多少张是选中的
                     List<LoadMediaBean> images = folder.getImages();
                     for (LoadMediaBean media : images) {
-                        String path = media.getPath();
+                        String path = media.getRealPath();
                         for (LoadMediaBean m : medias) {
-                            if (path.equals(m.getPath())) {
+                            if (path.equals(m.getRealPath())) {
                                 num++;
                                 folder.setCheckedNum(num);
                             }

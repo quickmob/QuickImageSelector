@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_margin="10dp">
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -20,32 +21,32 @@
                 android:id="@+id/et_appiont_folder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:hint="输入需要显示指定文件夹的名称"/>
+                android:hint="输入需要显示指定文件夹的名称"
+                android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/et_span_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:hint="输入每行显示的图片列数"
                 android:inputType="number"
-                android:hint="输入每行显示的图片列数"/>
+                android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/et_select_min_size"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:hint="输入选择文件最小值"
                 android:inputType="number"
-                android:hint="输入选择文件最小值"/>
+                android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/et_select_max_size"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:hint="输入选择文件最大值"
                 android:inputType="number"
-                android:hint="输入选择文件最大值"/>
+                android:textSize="14sp" />
 
             <RadioGroup
                 android:id="@+id/rgb_style"
@@ -53,6 +54,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
+
                 <RadioButton
                     android:id="@+id/rb_default_style"
                     android:layout_width="wrap_content"
@@ -175,16 +177,51 @@
                 android:gravity="center_vertical"
                 android:text="是否预览"
                 android:textSize="14sp" />
+
+            <LinearLayout
+                android:id="@+id/ll_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/iv_image"
+                    android:layout_width="300dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="btn_upload"
+                    android:text="上传图片" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
     <TextView
         android:id="@+id/tv_selectResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="6sp"/>
+        android:textSize="6sp" />
+
     <Button
-        android:id="@+id/btn_openSelector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="打开图片选择器"/>
+        android:onClick="btn_openSelector"
+        android:text="打开图片选择器" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="btn_take"
+        android:text="拍照或录像" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="btn_preview"
+        android:text="图片预览" />
 </LinearLayout>

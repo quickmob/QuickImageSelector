@@ -78,10 +78,10 @@ public class PicturePreviewAdapter extends PagerAdapter {
         ImageView videoPlay = contentView.findViewById(R.id.videoPlay_iv);
 
         LoadMediaBean infoBean = mImgList.get(position);
-        String path = infoBean.getPath();
+        String realPath = infoBean.getRealPath();
         String pcitureType = infoBean.getPictureType();
         boolean isLongImg = PictureHelper.isLongImg(infoBean);
-        boolean isGif = PictureHelper.isImageGif(path);
+        boolean isGif = PictureHelper.isImageGif(realPath);
         boolean isVideo = PictureHelper.isVideo(pcitureType);
 
         photoView.setVisibility(isLongImg && !isGif ? View.GONE : View.VISIBLE);
@@ -98,13 +98,13 @@ public class PicturePreviewAdapter extends PagerAdapter {
         if (isGif) {
             Glide.with(container.getContext())
                     .asGif()
-                    .load(path)
+                    .load(realPath)
                     .apply(options)
                     .into(photoView);
         } else if (isLongImg) {
             Glide.with(container.getContext())
                     .asBitmap()
-                    .load(path)
+                    .load(realPath)
                     .apply(options)
                     .into(new CustomTarget<Bitmap>() {
                         @Override
@@ -120,7 +120,7 @@ public class PicturePreviewAdapter extends PagerAdapter {
         } else {
             Glide.with(container.getContext())
                     .asDrawable()
-                    .load(path)
+                    .load(realPath)
                     .apply(options)
                     .into(photoView);
         }
@@ -134,7 +134,7 @@ public class PicturePreviewAdapter extends PagerAdapter {
         videoPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickOnPlay(path);
+                clickOnPlay(realPath);
             }
         });
 

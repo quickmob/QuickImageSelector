@@ -20,7 +20,7 @@ public class TakePhotoUtil {
     /**
      * 打开相机拍照
      */
-    public static void openCamera(Activity mActivity, String outputCameraPath) {
+    public static boolean openCamera(Activity mActivity, String outputCameraPath) {
         File dir = new File(outputCameraPath);
         if (!dir.exists()) {
             FileUtils.createOrExistsFile(dir);
@@ -32,15 +32,16 @@ public class TakePhotoUtil {
 
         if (intent.resolveActivity(mActivity.getApplicationContext().getPackageManager()) == null) {
             Toast.makeText(mActivity.getApplicationContext(), mActivity.getApplicationContext().getResources().getString(R.string.picture_toast_take_photo_none), Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
         mActivity.startActivityForResult(intent, PictureConfig.CAMERA_REQUEST);
+        return true;
     }
 
     /**
      * 打开相机录像
      */
-    public static void openCamera(Activity mActivity, String outputCameraPath, int recordVideoSecond, int videoQuality) {
+    public static boolean openCamera(Activity mActivity, String outputCameraPath, int recordVideoSecond, int videoQuality) {
         File dir = new File(outputCameraPath);
         if (!dir.exists()) {
             FileUtils.createOrExistsFile(dir);
@@ -54,8 +55,9 @@ public class TakePhotoUtil {
 
         if (intent.resolveActivity(mActivity.getApplicationContext().getPackageManager()) == null) {
             Toast.makeText(mActivity.getApplicationContext(), mActivity.getApplicationContext().getResources().getString(R.string.picture_toast_take_photo_none), Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
         mActivity.startActivityForResult(intent, PictureConfig.CAMERA_REQUEST);
+        return true;
     }
 }

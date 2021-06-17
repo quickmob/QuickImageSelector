@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
-import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.SizeUtils;
 import com.lookballs.pictureselector.PictureSelector;
 import com.lookballs.pictureselector.R;
@@ -33,10 +32,8 @@ import com.lookballs.pictureselector.config.PictureConfig;
 import com.lookballs.pictureselector.config.PictureOptionsBean;
 import com.lookballs.pictureselector.helper.PermissionsHelper;
 import com.lookballs.pictureselector.helper.PictureHelper;
-import com.lookballs.pictureselector.model.MediaLoader;
 import com.lookballs.pictureselector.model.MediaLoaderV2;
 import com.lookballs.pictureselector.util.CommonUtil;
-import com.lookballs.pictureselector.util.TakePhotoUtil;
 import com.lookballs.pictureselector.widget.GridSpacingItemDecoration;
 import com.lookballs.pictureselector.widget.PictureFolderLayout;
 
@@ -53,7 +50,7 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
     //布局
     private RecyclerView photoRv;
     private ImageView backIv;
-    private TextView titleTv, previewTv, okTv, folderTv;
+    private TextView titleTv, previewTv, okTv, folderTv, tipsTv;
     private LinearLayout emptyLayoutLl;
     private PictureFolderLayout folderLayout;
 
@@ -61,23 +58,20 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
     private PictureGridImageAdapter mAdapter;//适配器
     private ArrayList<LoadMediaBean> mImgList;//图片列表
     private boolean isFolderOpen = false;//图片文件夹是否打开
-    private boolean isVideo = false;//是否拍摄视频
     //权限申请
-    private String[] READ_WRITE_PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
-    private String[] CAMERA_PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+    private String[] READ_WRITE_PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
     //权限申请类
     private PermissionsHelper permissionsHelper;
     //图片加载管理
-    private MediaLoader mediaLoader;
     private MediaLoaderV2 mediaLoaderV2;
 
-    public static void openActivity(Activity activity, Fragment fragment, int requestCode) {
+    public static void openActivity(Activity activity, Fragment fragment) {
         if (activity != null) {
             Intent intent = new Intent(activity, PictureSelectorActivity.class);
             if (fragment != null) {
-                fragment.startActivityForResult(intent, requestCode);
+                fragment.startActivityForResult(intent, PictureConfig.CHOOSE_REQUEST);
             } else {
-                activity.startActivityForResult(intent, requestCode);
+                activity.startActivityForResult(intent, PictureConfig.CHOOSE_REQUEST);
             }
         }
     }
@@ -113,6 +107,8 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
         folderTv = findViewById(R.id.folder_tv);
         folderLayout = findViewById(R.id.folder_pfl);
         emptyLayoutLl = findViewById(R.id.emptyLayout_ll);
+        tipsTv = findViewById(R.id.tips_tv);
+
         okTv.setOnClickListener(this);
         backIv.setOnClickListener(this);
         previewTv.setOnClickListener(this);
@@ -131,7 +127,6 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
                 previewTv.setVisibility(View.GONE);
             }
         }
-
     }
 
     private void initAdapter(Bundle savedInstanceState) {
@@ -155,7 +150,7 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
             @Override
             public void onSelect(ArrayList<LoadMediaBean> beans) {
                 if (optionsBean.selectMode == PictureConfig.NONE) {
-                    onResult(beans);
+                    onSelectResult(beans);
                 } else {
                     if (beans.size() > 0) {
                         previewTv.setEnabled(true);
@@ -176,13 +171,8 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
             }
 
             @Override
-            public void onCamera(int mimeType) {
-                if (mimeType == PictureConfig.TYPE_VIDEO) {
-                    isVideo = true;
-                } else {
-                    isVideo = false;
-                }
-                permissionCarmera();
+            public void onCamera() {
+                PictureCameraActivity.openActivity(PictureSelectorActivity.this, null, false);
             }
         });
         folderLayout.getRootLayoutClickListener(new PictureFolderLayout.RootLayoutClickListener() {
@@ -199,8 +189,6 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
                 folderOpenClose();
                 if (!isSelected) {
                     folderTv.setText(folderName);
-                    //mImgList = images;
-                    //mAdapter.bindImagesData(mImgList);
                     mediaLoaderV2.loadByBucketId(bucketId, new MediaLoaderV2.LoadMediaCallback() {
                         @Override
                         public void loadComplete(ArrayList<LoadMediaFolderBean> folders) {
@@ -217,14 +205,13 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
                         @Override
                         public void loadError(Throwable t) {
                             t.printStackTrace();
-                            Toast.makeText(PictureSelectorActivity.this.getApplicationContext(), getString(R.string.picture_toast_load_error), Toast.LENGTH_SHORT).show();
+                            loadMediaError();
                         }
                     });
                 }
             }
         });
 
-        mediaLoader = new MediaLoader(this);
         mediaLoaderV2 = new MediaLoaderV2(this);
 
         permissionsHelper = PermissionsHelper.create(this);
@@ -253,39 +240,6 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
                             Toast.makeText(PictureSelectorActivity.this.getApplicationContext(), getString(R.string.picture_toast_permission_write), Toast.LENGTH_SHORT).show();
                         }
                         cannotGetFileInfo();
-                        if (PictureOptionsBean.onPermissionDenied != null) {
-                            PictureOptionsBean.onPermissionDenied.onDenied(permissions, isNever);
-                        }
-                    }
-                });
-    }
-
-    /**
-     * 请求拍照权限
-     */
-    private void permissionCarmera() {
-        permissionsHelper
-                .permission(CAMERA_PERMISSIONS)
-                .request(new PermissionsHelper.PermissionsCallback() {
-                    @Override
-                    public void onGranted(List<String> permissions, boolean isAll) {
-                        if (isAll) {
-                            if (isVideo) {
-                                TakePhotoUtil.openCamera(PictureSelectorActivity.this, optionsBean.outputCameraPath, optionsBean.recordVideoSecond, optionsBean.videoQuality);
-                            } else {
-                                TakePhotoUtil.openCamera(PictureSelectorActivity.this, optionsBean.outputCameraPath);
-                            }
-                            canGetFileInfo();
-                        }
-                    }
-
-                    @Override
-                    public void onDenied(List<String> permissions, boolean isNever) {
-                        if (isNever) {
-                            Toast.makeText(PictureSelectorActivity.this.getApplicationContext(), getString(R.string.picture_toast_permission_camera_never), Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(PictureSelectorActivity.this.getApplicationContext(), getString(R.string.picture_toast_permission_camera), Toast.LENGTH_SHORT).show();
-                        }
                         if (PictureOptionsBean.onPermissionDenied != null) {
                             PictureOptionsBean.onPermissionDenied.onDenied(permissions, isNever);
                         }
@@ -326,7 +280,7 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
             @Override
             public void loadError(Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(PictureSelectorActivity.this.getApplicationContext(), getString(R.string.picture_toast_load_error), Toast.LENGTH_SHORT).show();
+                loadMediaError();
             }
         });
     }
@@ -352,7 +306,17 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
             }
         } else {
             emptyLayoutLl.setVisibility(View.VISIBLE);
+            tipsTv.setText(getString(R.string.picture_text_empty));
         }
+    }
+
+    /**
+     * 图库加载失败时的布局显示
+     */
+    private void loadMediaError() {
+        photoRv.setVisibility(View.GONE);
+        emptyLayoutLl.setVisibility(View.VISIBLE);
+        tipsTv.setText(getString(R.string.picture_toast_load_error));
     }
 
     /**
@@ -379,7 +343,7 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
         } else if (v.getId() == R.id.ok_tv) {
             clickOnComplete();
         } else if (v.getId() == R.id.preview_tv) {
-            PictureSelector.openPicturePreview(this, mAdapter.checkImages, mAdapter.checkImages, 0, true);
+            PicturePreviewActivity.openActivity(this, mAdapter.checkImages, mAdapter.checkImages, 0);
         } else if (v.getId() == R.id.folder_tv) {
             folderOpenClose();
         }
@@ -415,7 +379,7 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
             @SuppressLint("StringFormatMatches") String str = eqImg ? getString(R.string.picture_toast_min_num_img, optionsBean.minSelectNum) : getString(R.string.picture_toast_min_num_video, optionsBean.minSelectNum);
             Toast.makeText(this.getApplicationContext(), str, Toast.LENGTH_SHORT).show();
         } else {
-            onResult(images);
+            onSelectResult(images);
         }
     }
 
@@ -472,7 +436,7 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
                 case PictureConfig.PREVIEW_FLAG:
                     //预览时点击已完成按钮回调
                     ArrayList<LoadMediaBean> selectImages2 = event.mediaBeans;
-                    onResult(selectImages2);
+                    onSelectResult(selectImages2);
                     break;
             }
         }
@@ -490,27 +454,11 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PictureConfig.CAMERA_REQUEST) {//拍照返回
-            String outputPath = optionsBean.outputCameraPath;
             switch (resultCode) {
                 case Activity.RESULT_OK:
-                    //刷新图库
-                    CommonUtil.scanDirAsync(this, new String[]{outputPath}, null);
-                    //构造返回结果
-                    ArrayList<LoadMediaBean> mediaBeans = new ArrayList<>();
-                    LoadMediaBean mediaBean = new LoadMediaBean();
-                    mediaBean.setPath(outputPath);
-                    int duration = PictureHelper.getLocalVideoDuration(outputPath);
-                    String pictureType = optionsBean.mimeType == PictureConfig.TYPE_VIDEO ? PictureHelper.createVideoType(outputPath) : PictureHelper.createImageType(outputPath);
-                    mediaBean.setPictureType(pictureType);
-                    mediaBean.setDuration(duration);
-                    mediaBean.setMimeType(optionsBean.mimeType);
-                    mediaBeans.add(mediaBean);
-                    //回调结果
-                    onResult(mediaBeans);
-                    break;
-                case Activity.RESULT_CANCELED:
-                    //删除这个文件
-                    FileUtils.delete(outputPath);
+                    //拍摄结果回调
+                    ArrayList<LoadMediaBean> list = PictureSelector.obtainMultipleResult(data, true);
+                    onSelectResult(list);
                     break;
             }
         }

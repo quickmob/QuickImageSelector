@@ -5,18 +5,19 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 
 public class LoadMediaBean implements Parcelable {
-    private long id;
-    private String path;
-    private long duration;
-    private int mimeType;
-    private String pictureType;
-    private int width;
-    private int height;
-    private long bucketId;
-    private String bucketDisplayName;
-    private String displayName;
-    private long size;
-    private long dateAdded;
+    private long id;//文件ID
+    private String absolutePath;//文件绝对路径
+    private String realPath;//适配了Android Q的真实文件路径
+    private long duration;//视频时长
+    private int mimeType;//需要显示的文件类型
+    private String pictureType;//真实的文件类型
+    private int width;//文件宽度
+    private int height;//文件高度
+    private long bucketId;//文件夹ID
+    private String bucketDisplayName;//文件夹名
+    private String displayName;//文件名
+    private long size;//文件大小
+    private long dateAdded;//文件创建时间
 
     public int position;
     public int num;
@@ -25,18 +26,10 @@ public class LoadMediaBean implements Parcelable {
 
     }
 
-    public LoadMediaBean(String path, long duration, int mimeType, String pictureType, int width, int height) {
-        this.path = path;
-        this.duration = duration;
-        this.mimeType = mimeType;
-        this.pictureType = pictureType;
-        this.width = width;
-        this.height = height;
-    }
-
-    public LoadMediaBean(long id, String path, long duration, int mimeType, String pictureType, int width, int height, long bucketId, String bucketDisplayName, String displayName, long size, long dateAdded) {
+    public LoadMediaBean(long id, String absolutePath, String realPath, long duration, int mimeType, String pictureType, int width, int height, long bucketId, String bucketDisplayName, String displayName, long size, long dateAdded) {
         this.id = id;
-        this.path = path;
+        this.absolutePath = absolutePath;
+        this.realPath = realPath;
         this.duration = duration;
         this.mimeType = mimeType;
         this.pictureType = pictureType;
@@ -68,12 +61,20 @@ public class LoadMediaBean implements Parcelable {
         this.pictureType = pictureType;
     }
 
-    public String getPath() {
-        return path;
+    public String getAbsolutePath() {
+        return absolutePath;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setAbsolutePath(String absolutePath) {
+        this.absolutePath = absolutePath;
+    }
+
+    public String getRealPath() {
+        return realPath;
+    }
+
+    public void setRealPath(String realPath) {
+        this.realPath = realPath;
     }
 
     public long getDuration() {
@@ -156,7 +157,8 @@ public class LoadMediaBean implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.id);
-        dest.writeString(this.path);
+        dest.writeString(this.absolutePath);
+        dest.writeString(this.realPath);
         dest.writeLong(this.duration);
         dest.writeInt(this.mimeType);
         dest.writeString(this.pictureType);
@@ -174,7 +176,8 @@ public class LoadMediaBean implements Parcelable {
 
     protected LoadMediaBean(Parcel in) {
         this.id = in.readLong();
-        this.path = in.readString();
+        this.absolutePath = in.readString();
+        this.realPath = in.readString();
         this.duration = in.readLong();
         this.mimeType = in.readInt();
         this.pictureType = in.readString();

@@ -9,13 +9,14 @@ public final class PictureConfig {
     public final static int TYPE_PICTURE = 2;
 
     public final static String EXTRA_SELECT_LIST = "selectList";
-    public final static String EXTRA_RESULT_SELECTION = "extra_result_media";
+    public final static String EXTRA_RESULT_SELECT = "extra_result_select";
+    public final static String EXTRA_RESULT_CAMERA = "extra_result_camera";
     public final static String EXTRA_CONFIG = "PictureOptionsBean";
 
     public final static String IMAGE = "image";
     public final static String VIDEO = "video";
 
-    public final static int CAMERA_REQUEST = 666;
+    public static int CAMERA_REQUEST = 666;
     public static int CHOOSE_REQUEST = 999;
 
     public final static int UPDATE_FLAG = 9001;//预览界面更新选中数据标识

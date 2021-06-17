@@ -50,10 +50,14 @@ public final class PictureSelector {
      * @param data
      * @return
      */
-    private static ArrayList<LoadMediaBean> obtainMultipleResult(Intent data) {
+    public static ArrayList<LoadMediaBean> obtainMultipleResult(Intent data, boolean isCameraResult) {
         ArrayList<LoadMediaBean> result = new ArrayList<>();
         if (data != null) {
-            result = (ArrayList<LoadMediaBean>) data.getSerializableExtra(PictureConfig.EXTRA_RESULT_SELECTION);
+            if (isCameraResult) {
+                result = (ArrayList<LoadMediaBean>) data.getSerializableExtra(PictureConfig.EXTRA_RESULT_CAMERA);
+            } else {
+                result = (ArrayList<LoadMediaBean>) data.getSerializableExtra(PictureConfig.EXTRA_RESULT_SELECT);
+            }
             if (result == null) {
                 result = new ArrayList<>();
             }
@@ -72,9 +76,27 @@ public final class PictureSelector {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == PictureConfig.CHOOSE_REQUEST) {
                 //图片、视频、音频选择结果回调
-                ArrayList<LoadMediaBean> selectList = obtainMultipleResult(data);
+                ArrayList<LoadMediaBean> selectList = obtainMultipleResult(data, false);
                 if (onPictureSelectResult != null) {
                     onPictureSelectResult.onResult(selectList);
+                }
+            }
+        }
+    }
+
+    /**
+     * 对外的选择的数据接收器
+     *
+     * @param data
+     * @return
+     */
+    public static void onActivityResult(int requestCode, int resultCode, Intent data, PictureOptions.OnCameraResult onCameraResult) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == PictureConfig.CAMERA_REQUEST) {
+                //拍摄结果回调
+                ArrayList<LoadMediaBean> selectList = obtainMultipleResult(data, true);
+                if (onCameraResult != null) {
+                    onCameraResult.onResult(selectList);
                 }
             }
         }
@@ -86,12 +108,10 @@ public final class PictureSelector {
      * @param mActivity
      * @param position
      * @param mImageList
-     * @param mSelectImageList
-     * @param isClickPreView
      */
-    public static void openPicturePreview(Activity mActivity, ArrayList<LoadMediaBean> mImageList, ArrayList<LoadMediaBean> mSelectImageList, int position, boolean isClickPreView) {
+    public static void openPicturePreview(Activity mActivity, ArrayList<LoadMediaBean> mImageList, int position) {
         if (!CommonUtil.isFastClick()) {
-            PicturePreviewActivity.openActivity(mActivity, mImageList, mSelectImageList, position, isClickPreView);
+            PicturePreviewActivity.openActivity(mActivity, mImageList, position);
         }
     }
 

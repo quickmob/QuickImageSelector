@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lookballs.app.pictureselector">
 
-    <!-- TODO 在AndroidQ及以上手机，如果不设置android:requestLegacyExternalStorage="true"，图片加载不出来，这里需要去做适配 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- TODO 在AndroidQ及以上手机，如果不设置android:requestLegacyExternalStorage="true"，会报open failed: EACCES (Permission denied)错误，导致图片上传不了。如果在更高版本的设备上设置这个也没用了，就需要使用三方权限框架去对文件读写权限做适配 -->
 
     <application
         android:name=".StartApplication"
